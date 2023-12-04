@@ -1,0 +1,6 @@
+docker-registry (2.7.1+ds2-5) unstable; urgency=medium
+
+  The Azure storage driver is no longer supported. If you need it, please help
+  maintaining the Azure SDK, along with its dependency tree.
+
+ -- Arnaud Rebillout <arnaud.rebillout@collabora.com>  Mon, 16 Dec 2019 10:51:27 +0700

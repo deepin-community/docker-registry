@@ -1,0 +1,23 @@
+From: Dmitry Smirnov <onlyjob@debian.org>
+Date: Tue, 8 Feb 2022 00:39:58 +0800
+Subject: allow delete by default.
+
+Last-Update: 2016-08-18
+Forwarded: not-needed
+---
+ cmd/registry/config-example.yml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/cmd/registry/config-example.yml b/cmd/registry/config-example.yml
+index c760cd5..a05cb1a 100644
+--- a/cmd/registry/config-example.yml
++++ b/cmd/registry/config-example.yml
+@@ -7,6 +7,8 @@ storage:
+     blobdescriptor: inmemory
+   filesystem:
+     rootdirectory: /var/lib/registry
++  delete:
++    enabled: true
+ http:
+   addr: :5000
+   headers:

@@ -1,0 +1,45 @@
+From: Tianon Gravi <tianon@debian.org>
+Date: Tue, 8 Feb 2022 00:39:58 +0800
+Subject: Patch the default "rootdirectory" for policy compliance
+
+Forwarded: no
+---
+ cmd/registry/config-dev.yml     | 2 +-
+ cmd/registry/config-example.yml | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/cmd/registry/config-dev.yml b/cmd/registry/config-dev.yml
+index 9539bae..8869908 100644
+--- a/cmd/registry/config-dev.yml
++++ b/cmd/registry/config-dev.yml
+@@ -24,7 +24,7 @@ storage:
+     cache:
+         blobdescriptor: redis
+     filesystem:
+-        rootdirectory: /var/lib/registry
++        rootdirectory: /var/lib/docker-registry
+     maintenance:
+         uploadpurging:
+             enabled: false
+diff --git a/cmd/registry/config-example.yml b/cmd/registry/config-example.yml
+index a05cb1a..d2aecbb 100644
+--- a/cmd/registry/config-example.yml
++++ b/cmd/registry/config-example.yml
+@@ -6,7 +6,7 @@ storage:
+   cache:
+     blobdescriptor: inmemory
+   filesystem:
+-    rootdirectory: /var/lib/registry
++    rootdirectory: /var/lib/docker-registry
+   delete:
+     enabled: true
+ http:
+@@ -16,7 +16,7 @@ http:
+ auth:
+   htpasswd:
+     realm: basic-realm
+-    path: /etc/registry
++    path: /etc/docker/registry
+ health:
+   storagedriver:
+     enabled: true

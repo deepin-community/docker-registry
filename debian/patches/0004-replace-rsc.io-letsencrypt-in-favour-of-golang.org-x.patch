@@ -1,0 +1,65 @@
+From: Tariq Ibrahim <tariq181290@gmail.com>
+Date: Tue, 8 Feb 2022 00:48:18 +0800
+Subject: replace rsc.io/letsencrypt in favour of golang.org/x/crypto
+
+Origin: backport, https://github.com/distribution/distribution/pull/2926
+---
+ registry/registry.go | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
+
+diff --git a/registry/registry.go b/registry/registry.go
+index dc156f4..1fc2edd 100644
+--- a/registry/registry.go
++++ b/registry/registry.go
+@@ -13,7 +13,8 @@ import (
+ 	"syscall"
+ 	"time"
+ 
+-	"rsc.io/letsencrypt"
++	"golang.org/x/crypto/acme"
++	"golang.org/x/crypto/acme/autocert"
+ 
+ 	logrus_bugsnag "github.com/Shopify/logrus-bugsnag"
+ 
+@@ -79,6 +80,7 @@ var defaultCipherSuites = []uint16{
+ 
+ // maps tls version strings to constants
+ var defaultTLSVersionStr = "tls1.2"
++
+ var tlsVersions = map[string]uint16{
+ 	// user specified values
+ 	"tls1.0": tls.VersionTLS10,
+@@ -96,7 +98,6 @@ var ServeCmd = &cobra.Command{
+ 	Short: "`serve` stores and distributes Docker images",
+ 	Long:  "`serve` stores and distributes Docker images.",
+ 	Run: func(cmd *cobra.Command, args []string) {
+-
+ 		// setup context
+ 		ctx := dcontext.WithVersion(dcontext.Background(), version.Version)
+ 
+@@ -247,19 +248,14 @@ func (registry *Registry) ListenAndServe() error {
+ 			if config.HTTP.TLS.Certificate != "" {
+ 				return fmt.Errorf("cannot specify both certificate and Let's Encrypt")
+ 			}
+-			var m letsencrypt.Manager
+-			if err := m.CacheFile(config.HTTP.TLS.LetsEncrypt.CacheFile); err != nil {
+-				return err
+-			}
+-			if !m.Registered() {
+-				if err := m.Register(config.HTTP.TLS.LetsEncrypt.Email, nil); err != nil {
+-					return err
+-				}
+-			}
+-			if len(config.HTTP.TLS.LetsEncrypt.Hosts) > 0 {
+-				m.SetHosts(config.HTTP.TLS.LetsEncrypt.Hosts)
++			m := &autocert.Manager{
++				HostPolicy: autocert.HostWhitelist(config.HTTP.TLS.LetsEncrypt.Hosts...),
++				Cache:      autocert.DirCache(config.HTTP.TLS.LetsEncrypt.CacheFile),
++				Email:      config.HTTP.TLS.LetsEncrypt.Email,
++				Prompt:     autocert.AcceptTOS,
+ 			}
+ 			tlsConf.GetCertificate = m.GetCertificate
++			tlsConf.NextProtos = append(tlsConf.NextProtos, acme.ALPNProto)
+ 		} else {
+ 			tlsConf.Certificates = make([]tls.Certificate, 1)
+ 			tlsConf.Certificates[0], err = tls.LoadX509KeyPair(config.HTTP.TLS.Certificate, config.HTTP.TLS.Key)

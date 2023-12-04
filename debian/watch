@@ -1,0 +1,7 @@
+version=4
+opts="filenamemangle=s%(?:.*?)?v?(@ANY_VERSION@@ARCHIVE_EXT@)%@PACKAGE@-$1%, \
+  uversionmangle=s%(\d)-(rc|beta|alpha)\.?(\d*)$%$1~$2$3%, \
+  dversionmangle=auto, \
+  repacksuffix=+ds1" \
+https://github.com/distribution/distribution/tags \
+(?:.*?/)?v?@ANY_VERSION@\.tar\.gz

@@ -1,0 +1,10 @@
+[Unit]
+Description=the Docker toolset to pack, ship, store, and deliver content
+After=network.target
+
+[Service]
+User=docker-registry
+ExecStart=/usr/bin/docker-registry serve /etc/docker/registry/config.yml
+
+[Install]
+WantedBy=multi-user.target

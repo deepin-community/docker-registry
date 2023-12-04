@@ -1,0 +1,21 @@
+From: Shengjing Zhu <zhsj@debian.org>
+Date: Tue, 8 Feb 2022 01:07:49 +0800
+Subject: Skip TestHTTPChecker
+
+Forwarded: not-needed
+---
+ health/checks/checks_test.go | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/health/checks/checks_test.go b/health/checks/checks_test.go
+index 6b6dd14..d803990 100644
+--- a/health/checks/checks_test.go
++++ b/health/checks/checks_test.go
+@@ -15,6 +15,7 @@ func TestFileChecker(t *testing.T) {
+ }
+ 
+ func TestHTTPChecker(t *testing.T) {
++	t.Skip("No network access in Debian buildd")
+ 	if err := HTTPChecker("https://www.google.cybertron", 200, 0, nil).Check(); err == nil {
+ 		t.Errorf("Google on Cybertron was expected as not exists")
+ 	}
