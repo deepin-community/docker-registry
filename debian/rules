@@ -1,4 +1,22 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/pkg-info.mk
+
+export DH_GOLANG_EXCLUDES := \
+	registry/storage/driver/azure \
+	cmd/digest  cmd/registry-api-descriptor-template \
+	contrib/token-server
+
 %:
-	dh $@
+	dh $@ --buildsystem=golang --with=golang
+
+override_dh_auto_build:
+	dh_auto_build -- -ldflags '-X github.com/docker/distribution/version.Version=$(DEB_VERSION_UPSTREAM)'
+
+execute_after_dh_auto_install:
+	mv debian/tmp/usr/bin/registry debian/tmp/usr/bin/docker-registry
+	mkdir -p debian/tmp/etc/docker/registry
+	cp cmd/registry/config-example.yml debian/tmp/etc/docker/registry/config.yml
+
+override_dh_auto_test:
+	dh_auto_test -- -test.short -test.timeout=1h

@@ -1,0 +1,40 @@
+From: Tianon Gravi <tianon@debian.org>
+Date: Tue, 8 Feb 2022 00:50:36 +0800
+Subject: Temporarily remove newrelic support to cut down on dependencies for
+ initial release
+
+Forwarded: not-needed
+---
+ registry/registry.go | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
+
+diff --git a/registry/registry.go b/registry/registry.go
+index 1fc2edd..0617027 100644
+--- a/registry/registry.go
++++ b/registry/registry.go
+@@ -31,7 +31,6 @@ import (
+ 	gorhandlers "github.com/gorilla/handlers"
+ 	log "github.com/sirupsen/logrus"
+ 	"github.com/spf13/cobra"
+-	"github.com/yvasiyarov/gorelic"
+ )
+ 
+ // a map of TLS cipher suite names to constants in https://golang.org/pkg/crypto/tls/#pkg-constants
+@@ -325,16 +324,7 @@ func configureReporting(app *handlers.App) http.Handler {
+ 	}
+ 
+ 	if app.Config.Reporting.NewRelic.LicenseKey != "" {
+-		agent := gorelic.NewAgent()
+-		agent.NewrelicLicense = app.Config.Reporting.NewRelic.LicenseKey
+-		if app.Config.Reporting.NewRelic.Name != "" {
+-			agent.NewrelicName = app.Config.Reporting.NewRelic.Name
+-		}
+-		agent.CollectHTTPStat = true
+-		agent.Verbose = app.Config.Reporting.NewRelic.Verbose
+-		agent.Run()
+-
+-		handler = agent.WrapHTTPHandler(handler)
++		log.Warnf("NewRelic LicenseKey provided, but this install does not include NewRelic support")
+ 	}
+ 
+ 	return handler

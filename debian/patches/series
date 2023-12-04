@@ -1,0 +1,8 @@
+0001-config-allow-delete.patch
+0002-config-docker-registry.patch
+0003-no-azure.patch
+0004-replace-rsc.io-letsencrypt-in-favour-of-golang.org-x.patch
+0005-Temporarily-remove-newrelic-support-to-cut-down-on-d.patch
+0006-Skip-TestHTTPChecker.patch
+0007-Skip-TestRegistryAsCacheMutationAPIs.patch
+0008-Skip-flaky-TestGracefulShutdown-and-TestRegistrySupp.patch
