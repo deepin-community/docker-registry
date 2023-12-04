@@ -1,0 +1,25 @@
+From: Shengjing Zhu <zhsj@debian.org>
+Date: Fri, 11 Feb 2022 03:16:24 +0800
+Subject: Skip TestRegistryAsCacheMutationAPIs
+
+FAIL: TestRegistryAsCacheMutationAPIs (0.09s)
+panic: Get "http://example.com/v2/": dial tcp: lookup example.com: Temporary failure in name resolution [recovered]
+	panic: Get "http://example.com/v2/": dial tcp: lookup example.com: Temporary failure in name resolution
+
+Forwarded: not-needed
+---
+ registry/handlers/api_test.go | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/registry/handlers/api_test.go b/registry/handlers/api_test.go
+index bf037d4..207e167 100644
+--- a/registry/handlers/api_test.go
++++ b/registry/handlers/api_test.go
+@@ -2728,6 +2728,7 @@ func createRepository(env *testEnv, t *testing.T, imageName string, tag string)
+ // Test mutation operations on a registry configured as a cache.  Ensure that they return
+ // appropriate errors.
+ func TestRegistryAsCacheMutationAPIs(t *testing.T) {
++	t.Skip("No network access in Debian buildd")
+ 	deleteEnabled := true
+ 	env := newTestEnvMirror(t, deleteEnabled)
+ 	defer env.Shutdown()

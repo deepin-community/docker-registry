@@ -1,0 +1,22 @@
+From: Dmitry Smirnov <onlyjob@debian.org>
+Date: Tue, 8 Feb 2022 00:39:58 +0800
+Subject: removed Azure support
+
+Last-Update: 2019-12-07
+Forwarded: not-needed
+---
+ cmd/registry/main.go | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/cmd/registry/main.go b/cmd/registry/main.go
+index 5beaa56..a868839 100644
+--- a/cmd/registry/main.go
++++ b/cmd/registry/main.go
+@@ -8,7 +8,6 @@ import (
+ 	_ "github.com/docker/distribution/registry/auth/silly"
+ 	_ "github.com/docker/distribution/registry/auth/token"
+ 	_ "github.com/docker/distribution/registry/proxy"
+-	_ "github.com/docker/distribution/registry/storage/driver/azure"
+ 	_ "github.com/docker/distribution/registry/storage/driver/filesystem"
+ 	_ "github.com/docker/distribution/registry/storage/driver/gcs"
+ 	_ "github.com/docker/distribution/registry/storage/driver/inmemory"
